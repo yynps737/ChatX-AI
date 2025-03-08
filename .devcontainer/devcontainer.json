@@ -1,7 +1,7 @@
 {
   "name": "ChatX-AI Development",
   "dockerFile": "Dockerfile",
-  "forwardPorts": [3000, 3001, 5432, 6379, 27017],
+  "forwardPorts": [3000, 3001, 5432, 6379, 27017, 9200, 5601],
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash",
     "editor.formatOnSave": true,
@@ -24,7 +24,6 @@
     "redhat.vscode-yaml",
     "mgmcdermott.vscode-language-babel",
     "aeschli.vscode-css-formatter",
-    "coenraads.bracket-pair-colorizer-2",
     "ms-vscode.vscode-typescript-next",
     "nrwl.angular-console",
     "eamodio.gitlens",
@@ -34,7 +33,10 @@
     "bierner.markdown-preview-github-styles",
     "donjayamanne.githistory"
   ],
-  "postCreateCommand": "echo 'DevContainer已准备就绪'",
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bullseye stable' | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null && sudo apt-get update && sudo apt-get install -y docker-ce-cli && sudo curl -L 'https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-x86_64' -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose && echo 'DevContainer已准备就绪，包含Docker CLI和docker-compose'",
   "remoteUser": "node",
   "features": {
     "git": "latest",

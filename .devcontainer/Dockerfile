@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # 安装基本工具和依赖
 RUN apt-get update && \
-    apt-get install -y curl wget gnupg git nano sudo postgresql-client redis-tools \
+    apt-get install -y curl wget gnupg git nano sudo postgresql-client redis-tools apt-transport-https ca-certificates \
     # 添加MongoDB仓库密钥和源
     && wget -qO - https://pgp.mongodb.com/server-6.0.asc | apt-key add - \
     && echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
