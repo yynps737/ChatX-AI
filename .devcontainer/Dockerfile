@@ -1,13 +1,26 @@
-FROM node:18
+FROM ubuntu:22.04
 
-# 安装基本工具
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install git curl wget nano sudo postgresql-client redis-tools \
-    # MongoDB官方仓库设置
-    && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - \
-    && echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/debian $(. /etc/os-release && echo "$VERSION_CODENAME")/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
+# 避免交互式提示
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 安装Node.js和基本工具
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    wget \
+    nano \
+    sudo \
+    postgresql-client \
+    redis-tools \
+    gnupg \
+    ca-certificates \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    # 安装MongoDB工具
+    && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/mongodb-6.gpg \
+    && echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
     && apt-get update \
-    && apt-get install -y mongodb-org-shell mongodb-mongosh \
+    && apt-get install -y mongodb-org-tools mongodb-org-shell \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -17,15 +30,13 @@ WORKDIR /workspace
 # 安装全局 npm 包
 RUN npm install -g @nestjs/cli typescript ts-node nodemon npm-check-updates
 
-# 确保默认用户有合适的权限
-RUN USER=node && \
-    GROUP=node && \
-    usermod -aG sudo $USER && \
-    echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER && \
-    chmod 0440 /etc/sudoers.d/$USER && \
-    mkdir -p /home/$USER/.vscode-server/extensions /home/$USER/.vscode-server-insiders/extensions && \
-    chown -R $USER:$GROUP /home/$USER && \
-    chown -R $USER:$GROUP /workspace
+# 创建非root用户
+RUN useradd -m -s /bin/bash -G sudo devuser \
+    && echo "devuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/devuser \
+    && chmod 0440 /etc/sudoers.d/devuser \
+    && mkdir -p /home/devuser/.vscode-server/extensions /home/devuser/.vscode-server-insiders/extensions \
+    && chown -R devuser:devuser /home/devuser \
+    && chown -R devuser:devuser /workspace
 
 # 设置默认用户
-USER node
+USER devuser
