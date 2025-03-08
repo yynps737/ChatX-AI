@@ -1,0 +1,25 @@
+{
+    "name": "ChatX-AI Development",
+    "dockerFile": "Dockerfile",
+    "forwardPorts": [3000, 5432, 6379, 27017],
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "extensions": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "ms-azuretools.vscode-docker",
+      "christian-kohler.npm-intellisense",
+      "firsttris.vscode-jest-runner",
+      "mikestead.dotenv",
+      "ms-vscode.vscode-typescript-tslint-plugin",
+      "redhat.vscode-yaml",
+      "mgmcdermott.vscode-language-babel"
+    ],
+    "postCreateCommand": "npm install",
+    "remoteUser": "node"
+  }
