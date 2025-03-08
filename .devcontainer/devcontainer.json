@@ -1,25 +1,43 @@
 {
-    "name": "ChatX-AI Development",
-    "dockerFile": "Dockerfile",
-    "forwardPorts": [3000, 5432, 6379, 27017],
-    "settings": {
-      "terminal.integrated.shell.linux": "/bin/bash",
-      "editor.formatOnSave": true,
-      "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-      }
+  "name": "ChatX-AI Development",
+  "dockerFile": "Dockerfile",
+  "forwardPorts": [3000, 3001, 5432, 6379, 27017],
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
     },
-    "extensions": [
-      "dbaeumer.vscode-eslint",
-      "esbenp.prettier-vscode",
-      "ms-azuretools.vscode-docker",
-      "christian-kohler.npm-intellisense",
-      "firsttris.vscode-jest-runner",
-      "mikestead.dotenv",
-      "ms-vscode.vscode-typescript-tslint-plugin",
-      "redhat.vscode-yaml",
-      "mgmcdermott.vscode-language-babel"
-    ],
-    "postCreateCommand": "npm install",
-    "remoteUser": "node"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "files.eol": "\n"
+  },
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker",
+    "christian-kohler.npm-intellisense",
+    "firsttris.vscode-jest-runner",
+    "mikestead.dotenv",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "redhat.vscode-yaml",
+    "mgmcdermott.vscode-language-babel",
+    "aeschli.vscode-css-formatter",
+    "coenraads.bracket-pair-colorizer-2",
+    "ms-vscode.vscode-typescript-next",
+    "nrwl.angular-console",
+    "eamodio.gitlens",
+    "mongodb.mongodb-vscode",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+    "bierner.markdown-preview-github-styles",
+    "donjayamanne.githistory"
+  ],
+  "postCreateCommand": "echo 'DevContainer已准备就绪'",
+  "remoteUser": "node",
+  "features": {
+    "git": "latest",
+    "github-cli": "latest"
   }
+}
