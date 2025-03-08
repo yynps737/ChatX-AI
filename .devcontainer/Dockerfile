@@ -2,7 +2,14 @@ FROM node:18
 
 # 安装基本工具
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install git curl wget nano sudo postgresql-client redis-tools mongodb-clients
+    && apt-get -y install git curl wget nano sudo postgresql-client redis-tools \
+    # MongoDB官方仓库设置
+    && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - \
+    && echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/debian $(. /etc/os-release && echo "$VERSION_CODENAME")/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
+    && apt-get update \
+    && apt-get install -y mongodb-org-shell mongodb-mongosh \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # 设置工作目录
 WORKDIR /workspace
